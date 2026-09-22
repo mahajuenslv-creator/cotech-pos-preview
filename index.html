@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mnvrestaurant.com — Mahajuen POS & Finance</title>
+    <script>
+      (function() {
+        // Suppress unhandled cross-origin iframe errors or generic websocket alerts that can pollute the context
+        window.addEventListener('error', function(e) {
+          if (e.message === 'Script error.' || (e.message && (e.message.includes('websocket') || e.message.includes('WebSocket')))) {
+            console.warn('Suppressed benign or cross-origin iframe browser/websocket error:', e);
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+
+        // Help page load smoothly if browser security sandbox blocks localStorage or sessionStorage
+        function createMockStorage() {
+          var mock = {};
+          return {
+            getItem: function(key) {
+              return mock[key] !== undefined ? mock[key] : null;
+            },
+            setItem: function(key, value) {
+              mock[key] = String(value);
+            },
+            removeItem: function(key) {
+              delete mock[key];
+            },
+            clear: function() {
+              mock = {};
+            },
+            key: function(i) {
+              var keys = Object.keys(mock);
+              return keys[i] || null;
+            },
+            get length() {
+              return Object.keys(mock).length;
+            }
+          };
+        }
+
+        try {
+          var test = '__storage_test__';
+          window.localStorage.setItem(test, test);
+          window.localStorage.removeItem(test);
+        } catch (e) {
+          Object.defineProperty(window, 'localStorage', {
+            value: createMockStorage(),
+            writable: true,
+            configurable: true
+          });
+          console.warn("localStorage restricted in browser security sandbox, loaded in-memory replacement.");
+        }
+
+        try {
+          var testSession = '__session_test__';
+          window.sessionStorage.setItem(testSession, testSession);
+          window.sessionStorage.removeItem(testSession);
+        } catch (e) {
+          Object.defineProperty(window, 'sessionStorage', {
+            value: createMockStorage(),
+            writable: true,
+            configurable: true
+          });
+          console.warn("sessionStorage restricted in browser security sandbox, loaded in-memory replacement.");
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@100..900&family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/cotech-pos-preview/assets/main-fmSlLy8U.js"></script>
+    <link rel="modulepreload" crossorigin href="/cotech-pos-preview/assets/index-gPLDP_Ys.js">
+    <link rel="stylesheet" crossorigin href="/cotech-pos-preview/assets/index-PBFizh_z.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+
